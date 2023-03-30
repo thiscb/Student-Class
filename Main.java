@@ -1,90 +1,97 @@
 package Student;
 
-import java.util.ArrayList;
+
+//Importing Scanner class in java.util package to read input from prompt
 import java.util.Scanner;
 
+//Only public Main Class
 public class Main {
-    private ArrayList<Student> students;
+    //Declaring array to store input student details from user
+    static Student[] students;
+    //Main method
+    public static void main(String[] args) {
+        // Variable for do while loop
+        int count;
 
-    public Main() {
-        students = new ArrayList<>();
-    }
+        // Do-While loop to iterate menu
+        do {
+            // Displaying Menu
+            System.out.println("1. Add Students");
+            System.out.println("2. Display");
+            System.out.println("3. Search(by prn)");
+            System.out.println("4. Search(by name)");
+            System.out.println("5. Search(by position)");
+            System.out.println("6. Edit Details");
+            System.out.println("7. Delete");
 
-    public void addStudent(Student student) {
-        students.add(student);
-        System.out.println("Student added successfully!");
-    }
+            // Scanner object to read choice from prompt
+            Scanner sc = new Scanner(System.in);
 
-    public void displayStudents() {
-        if (students.size() == 0) {
-            System.out.println("No students found!");
-            return;
-        }
-        for (Student student : students) {
-            System.out.println(student);
-        }
-    }
+            // variable to store choice from menu
+            int choice;
 
-    public void searchStudentByPrn(String prn) {
-        boolean found = false;
-        for (Student student : students) {
-            if (Integer.parseInt(prn)==student.getPrn()) {
-                System.out.println(student);
-                found = true;
-                break;
+            // Taking choice input from prompt
+            choice = sc.nextInt();
+
+            // Creating object of class Operations
+            Operations operate = new Operations();
+
+            // Switch Case for menu
+            switch (choice) {
+
+                // Case to call method search by prn
+                case 3:
+                    operate.searchByPrn(students);
+
+                    // Break to get out of the switch case
+                    break;
+
+                // Case to call method search by name
+                case 4:
+                    int index = operate.searchByName(students);
+
+                    // Break to get out of the switch case
+                    break;
+
+                // Case to call method search by index
+                case 5:
+                    operate.searchByIndex(students);
+
+                    // Break to get out of the switch case
+                    break;
+
+                // Case to edit details
+                case 6:
+                    students = operate.edit(students);
+                    operate.displayStudents(students);
+                    break;
+
+                // Case to edit student details in array
+                case 7:
+                    students = operate.delete(students);
+                    operate.displayStudents(students);
+                    break;
+
+                // Case to call method tp add student details
+                case 1:
+
+                    // Storing Added Details in students array
+                    students = operate.addStudent(students);
+
+                    // Case to call method to display all stored details
+                case 2:
+                default:
+                    operate.displayStudents(students);
+
+                    // Break to get out of the switch case
+                    break;
             }
-        }
-        if (!found) {
-            System.out.println("No student found with PRN " + prn);
-        }
-    }
 
-    public void searchStudentByName(String name) {
-        boolean found = false;
-        for (Student student : students) {
-            if (student.getName().equalsIgnoreCase(name)) {
-                System.out.println(student);
-                found = true;
-            }
-        }
-        if (!found) {
-            System.out.println("No student found with name " + name);
-        }
-    }
+            // Asking user if he/she wants to continue this menu
+            System.out.println("Do you want to perform more operations?(Y=1|N=0): ");
 
-    public void editStudent(String prn) {
-        boolean found = false;
-        for (Student student : students) {
-            if (Integer.parseInt(prn)==student.getPrn()) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Enter new name for the student:");
-                String name = scanner.nextLine();
-                System.out.println("Enter new date of birth for the student (yyyy-mm-dd):");
-                String dob = scanner.nextLine();
-                student.setName(name);
-                student.setDob(dob);
-                System.out.println("Student information updated successfully!");
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("No student found with PRN " + prn);
-        }
-    }
-
-    public void deleteStudent(String prn) {
-        boolean found = false;
-        for (Student student : students) {
-            if (Integer.parseInt(prn)==student.getPrn()) {
-                students.remove(student);
-                System.out.println("Student deleted successfully!");
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("No student found with PRN " + prn);
-        }
+            // Storing reply in count variable
+            count = sc.nextInt();
+        }while(count == 1); // While condition for do while loop
     }
 }
